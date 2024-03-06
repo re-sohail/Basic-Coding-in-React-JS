@@ -1,0 +1,47 @@
+.main-part1{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: calc(100vh - 100px);
+    background: #F3F3F1;
+    padding: 0 40px;
+    
+    .left-part{
+        width: 50%;
+
+        .small-data{
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            p{
+                font-size: 14px;
+                color: rgba(0, 0, 0, 0.515);
+                text-transform: capitalize;
+            }
+        }
+    }
+
+    h1{
+        font-size: 65px;
+        margin: 20px 0 80px;
+        text-transform: capitalize;
+    }
+    h5{
+        font-size: 14px;
+        color: rgba(0, 0, 0, 0.515);
+        text-transform: capitalize;
+        font-weight: 300;
+        position: relative;
+    }
+    h5::after{
+        content: '';
+        position: absolute;
+        bottom: -2px;
+        left: 0;
+        width: 70px;
+        height: 1.5px;
+        background: rgba(0, 0, 0, 0.515);
+    }
+}

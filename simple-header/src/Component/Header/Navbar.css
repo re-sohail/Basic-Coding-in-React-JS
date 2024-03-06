@@ -30,5 +30,5 @@
     transition: width 0.2s ease;
 }
 .list ul li:hover::after{
-    width: 40px;
+    width: 100%;
 }
