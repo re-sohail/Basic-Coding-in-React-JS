@@ -1,0 +1,34 @@
+.Navbar{
+    width: 100%;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px 40px;
+    background: #fff;
+}
+.logo img{
+    width: 70px;
+    height: 70px;
+    cursor: pointer;
+}
+.list ul li{
+    list-style: none;
+    display: inline-block;
+    margin: 0 20px;
+    cursor: pointer;
+    position: relative;
+}
+.list ul li::after{
+    content: '';
+    position: absolute;
+    bottom: -5px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #e92424;
+    transition: width 0.2s ease;
+}
+.list ul li:hover::after{
+    width: 40px;
+}
