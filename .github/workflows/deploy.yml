@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - run: npm ci
+
+      - run: npm run build
+
+      - run: zip -r dist.zip dist
+
+      - name: Get presigned upload URL
+        id: get-upload-url
+        run: |
+          response=$(curl -s -X POST             -H "Authorization: Bearer ${{ secrets.DEPLOY_TOKEN }}"             -H "Content-Type: application/json"             -d '{"projectId": "${{ secrets.PROJECT_ID }}", "fileName": "dist.zip"}'             https://web-deployment-be.vercel.app/v1/github/deploy/initiate)
+          echo "uploadUrl=$(echo $response | jq -r '.uploadUrl')" >> $GITHUB_OUTPUT
+          echo "key=$(echo $response | jq -r '.key')" >> $GITHUB_OUTPUT
+
+      - name: Upload dist.zip
+        run: |
+          curl -X PUT             -H "Content-Type: application/zip"             --upload-file dist.zip             "${{ steps.get-upload-url.outputs.uploadUrl }}"
+
+      - name: Complete deployment
+        run: |
+          curl -X POST             -H "Authorization: Bearer ${{ secrets.DEPLOY_TOKEN }}"             -H "Content-Type: application/json"             -d '{"key": "${{ steps.get-upload-url.outputs.key }}", "projectId": "${{ secrets.PROJECT_ID }}"}'             https://web-deployment-be.vercel.app/v1/github/deploy/complete
